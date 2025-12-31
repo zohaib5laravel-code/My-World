@@ -64,7 +64,8 @@
 
                                             <div class="col-12 mb-3">
                                                 <label class="form-label" for="text_over_img">Text Over Image</label>
-                                                <input type="text" class="form-control" value="{{$picture->text_over_img}}" name="text_over_img" id="text_over_img" />
+                                            <textarea class="form-control" id="body" name="text_over_img" >{{$picture->text_over_img}}</textarea>
+                                              
                                             </div>
                                         </div>
                                     </div>
@@ -133,7 +134,18 @@
 @endsection
 
 @section('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+
 <script>
+    let editor;
+
+    ClassicEditor
+        .create(document.querySelector('#body'))
+        .then(ed => {
+            editor = ed;
+        })
+        .catch(error => console.error(error));
+
     document.addEventListener('DOMContentLoaded', function() {
         const imageInput = document.getElementById('imageInput');
         const previewImage = document.getElementById('previewImage');

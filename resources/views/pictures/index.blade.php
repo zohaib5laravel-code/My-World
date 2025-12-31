@@ -54,7 +54,7 @@
                           
                                 <td>{{ucfirst($picture->type)}}</td>
                                 <td>
-                                    <img src="{{asset('assets/pictures/'.$picture->image)}}" width="130" alt="$picture->image">
+                                    <img src="{{asset('assets/pictures/'.$picture->image)}}" loading="lazy" width="130" alt="$picture->image">
                                 </td>
                                 <td>
                                     @if($picture->status == 1)

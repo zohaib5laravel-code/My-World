@@ -46,7 +46,7 @@
                                     <!-- Form Inputs Column -->
                                     <div class="col-lg-8">
                                         <div class="row">
-                                             <div class="col-lg-12 mb-3">
+                                            <div class="col-lg-12 mb-3">
                                                 <label class="form-label" for="title">Title <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="title" id="title" required />
                                             </div>
@@ -69,9 +69,9 @@
 
                                             <div class="col-12 mb-3">
                                                 <label class="form-label" for="body">Body <span class="text-danger">*</span></label>
-                                               <textarea class="form-control" id="body" name="body" placeholder="Post Body"></textarea>
-                <small class="text-danger ps-2 d-none" id="bodyErr">Add content in the body</small>
-             </div>
+                                                <textarea class="form-control" id="body" name="body" placeholder="Post Body"></textarea>
+                                                <small class="text-danger ps-2 d-none" id="bodyErr">Add content in the body</small>
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- End Form Inputs Column -->
