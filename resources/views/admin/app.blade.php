@@ -1,13 +1,11 @@
 <!doctype html>
 <html lang="en">
-<!--begin::Head-->
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>AdminLTE v4 | Dashboard</title>
-    <!--begin::Primary Meta Tags-->
+    <title>My World</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="title" content="AdminLTE v4 | Dashboard" />
+    <meta name="title" content="My World" />
     <meta name="author" content="ColorlibHQ" />
      <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta
@@ -60,12 +58,12 @@
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
-        @include('components/header')
-        @include('components/sidenav')
+        @include('admin/components/header')
+        @include('admin/components/sidenav')
 
         @yield('content')
 
-        @include('components/footer')
+        @include('admin/components/footer')
     </div>
     <!--end::App Wrapper-->
     <!--begin::Script-->

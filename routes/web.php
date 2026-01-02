@@ -8,11 +8,13 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->prefix('admin')->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -54,6 +56,11 @@ require __DIR__.'/auth.php';
 
 
 
-Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
+Route::get('/', [FrontendController::class, 'index'])->name('frontend.home');
 Route::get('/gallery', [FrontendController::class, 'gallery'])->name('frontend.gallery');
+Route::get('/about', [FrontendController::class, 'about'])->name('frontend.about');
+Route::get('/contact', [FrontendController::class, 'contact'])->name('frontend.contact');
+Route::post('/contact/send', [FrontendController::class, 'sendMessage'])->name('contact.send');
+Route::get('/posts', [FrontendController::class, 'posts'])->name('frontend.posts');
 Route::get('/{slug}', [FrontendController::class, 'post'])->name('frontend.post');
+Route::post('/{post}/comment', [FrontendController::class, 'storeComment'])->name('frontend.comment.store');

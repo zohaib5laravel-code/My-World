@@ -1,4 +1,4 @@
-@extends('layouts/app')
+@extends('admin/app')
 @section('content')
 
 <main class="app-main">
@@ -9,13 +9,13 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Edit Post</h3>
+                    <h3 class="mb-0">Add Post</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="{{route('posts.index')}}">Posts</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Post</li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Post</li>
                     </ol>
                 </div>
             </div>
@@ -33,13 +33,12 @@
                     <div class="card card-primary card-outline">
                         <!--begin::Card Header-->
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Edit New Post</h5>
+                            <h5 class="card-title mb-0">Add New Post</h5>
                         </div>
                         <!--end::Card Header-->
 
                         <!--begin::Form-->
-                        <form action="{{route('posts.update',$post->id)}}" method="post" enctype="multipart/form-data">
-                            @method('patch')
+                        <form action="{{route('posts.store')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <!--begin::Card Body-->
                             <div class="card-body">
@@ -49,7 +48,7 @@
                                         <div class="row">
                                             <div class="col-lg-12 mb-3">
                                                 <label class="form-label" for="title">Title <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="title" id="title" value="{{$post->title}}" required />
+                                                <input type="text" class="form-control" name="title" id="title" required />
                                             </div>
 
                                             <div class="col-lg-6 mb-3">
@@ -57,62 +56,54 @@
                                                 <select name="category_id" class="form-control" required>
                                                     <option value="">--Select Categoty--</option>
                                                     @foreach($categories as $category)
-                                                    <option value="{{$category->id}}" {{$post->category_id == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
+                                                    <option value="{{$category->id}}">{{$category->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
 
                                             <div class="col-lg-6 mb-3">
                                                 <label class="form-label" for="image">Image <span class="text-danger">*</span></label>
-                                                <input type="file" class="form-control" name="image" id="imageInput" accept="image/*" />
+                                                <input type="file" class="form-control" name="image" id="imageInput" accept="image/*" required />
                                                 <div class="form-text">Upload an image file (JPEG, PNG, GIF, etc.) Max 5MB.</div>
                                             </div>
 
                                             <div class="col-12 mb-3">
                                                 <label class="form-label" for="body">Body <span class="text-danger">*</span></label>
-                                                <textarea class="form-control" id="body" name="body" placeholder="Post Body">{{$post->body}}</textarea>
+                                                <textarea class="form-control" id="body" name="body" placeholder="Post Body"></textarea>
                                                 <small class="text-danger ps-2 d-none" id="bodyErr">Add content in the body</small>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- End Form Inputs Column -->
 
-
+                                    <!-- Image Preview Column -->
                                     <div class="col-lg-4">
                                         <div class="border rounded p-3 bg-light">
                                             <h6 class="mb-3 text-center">Image Preview</h6>
                                             <div class="text-center" id="imagePreviewContainer">
-                                                @if($post->image)
-                                                <img src="{{ asset('assets/posts/' . $post->image) }}"
-                                                    id="currentImage"
-                                                    alt="Current Image"
-                                                    class="img-fluid rounded border preview-image"
-                                                    style="max-height: 200px;">
-                                                <div class="mt-2 text-center text-muted small" id="currentFileName">
-                                                    {{ $post->image }}
-                                                </div>
-                                                @else
+                                                <!-- Default placeholder when no image is selected -->
                                                 <div id="noImagePlaceholder">
                                                     <i class="fas fa-image fa-3x text-muted mb-2"></i>
-                                                    <p class="text-muted">No image available</p>
+                                                    <p class="text-muted">No image selected</p>
+                                                    <p class="text-muted small">Select an image to preview</p>
                                                 </div>
-                                                @endif
 
-                                                <!-- New image preview (initially hidden) -->
-                                                <div id="newImagePreview" class="d-none">
+                                                <!-- Image preview (initially hidden) -->
+                                                <div id="imagePreview" class="d-none">
                                                     <img id="previewImage"
                                                         src="#"
-                                                        alt="New Image Preview"
+                                                        alt="Image Preview"
                                                         class="img-fluid rounded border preview-image"
                                                         style="max-height: 200px;">
-                                                    <div class="mt-2 text-center text-muted small" id="newFileName"></div>
-                                                    <div class="mt-1 text-center">
-                                                        <small class="text-info"><i class="fas fa-sync-alt me-1"></i>New selection</small>
+                                                    <div class="mt-2 text-center text-muted small" id="fileName"></div>
+                                                    <div class="mt-2">
+                                                        <small class="text-success"><i class="fas fa-check-circle me-1"></i>Ready to upload</small>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- End Image Preview Column -->
                                 </div>
                             </div>
                             <!--end::Card Body-->
@@ -121,7 +112,7 @@
                             <div class="card-footer">
                                 <div class="d-flex ">
                                     <a href="{{route('posts.index')}}" class="btn btn-outline-secondary me-2">Cancel</a>
-                                    <button type="submit" class="btn btn-primary">Update Post</button>
+                                    <button type="submit" class="btn btn-primary">Add Post</button>
                                 </div>
                             </div>
                             <!--end::Card Footer-->
@@ -161,14 +152,15 @@
     document.addEventListener('DOMContentLoaded', function() {
         const imageInput = document.getElementById('imageInput');
         const previewImage = document.getElementById('previewImage');
-        const newImagePreview = document.getElementById('newImagePreview');
-        const currentImage = document.getElementById('currentImage');
+        const imagePreview = document.getElementById('imagePreview');
         const noImagePlaceholder = document.getElementById('noImagePlaceholder');
-        const currentFileName = document.getElementById('currentFileName');
-        const newFileName = document.getElementById('newFileName');
+        const fileName = document.getElementById('fileName');
+        const previewContainer = document.getElementById('imagePreviewContainer');
 
+        // Preview image when file is selected
         imageInput.addEventListener('change', function() {
             const file = this.files[0];
+
             if (file) {
                 // Validate file type
                 if (!file.type.match('image.*')) {
@@ -187,49 +179,49 @@
                 const reader = new FileReader();
 
                 reader.addEventListener('load', function() {
-                    // Show new image preview
+                    // Update preview image
                     previewImage.src = reader.result;
-                    newFileName.textContent = file.name;
+                    fileName.textContent = file.name;
 
-                    // Hide current image or placeholder
-                    if (currentImage) {
-                        currentImage.style.display = 'none';
-                    }
-                    if (noImagePlaceholder) {
-                        noImagePlaceholder.style.display = 'none';
-                    }
-                    if (currentFileName) {
-                        currentFileName.style.display = 'none';
-                    }
+                    // Calculate and display image dimensions
+                    const img = new Image();
+                    img.onload = function() {
+                        const dimensionsText = `${this.width} × ${this.height} pixels`;
+                        const sizeText = formatFileSize(file.size);
+                        fileName.innerHTML = `${file.name}<br><small class="text-muted">${dimensionsText} • ${sizeText}</small>`;
+                    };
+                    img.src = reader.result;
 
-                    // Show new image preview
-                    newImagePreview.classList.remove('d-none');
+                    // Hide placeholder and show preview
+                    noImagePlaceholder.style.display = 'none';
+                    imagePreview.classList.remove('d-none');
 
                     // Add animation effect
-                    newImagePreview.style.opacity = '0';
-                    newImagePreview.style.transition = 'opacity 0.3s ease';
+                    imagePreview.style.opacity = '0';
+                    imagePreview.style.transition = 'opacity 0.3s ease';
                     setTimeout(() => {
-                        newImagePreview.style.opacity = '1';
+                        imagePreview.style.opacity = '1';
                     }, 10);
                 });
 
                 reader.readAsDataURL(file);
             } else {
-                // If no file selected, show the original image again
-                newImagePreview.classList.add('d-none');
-                if (currentImage) {
-                    currentImage.style.display = 'block';
-                    currentFileName.style.display = 'block';
-                }
-                if (noImagePlaceholder && !currentImage) {
-                    noImagePlaceholder.style.display = 'block';
-                }
+                // If no file selected, show the placeholder again
+                imagePreview.classList.add('d-none');
+                noImagePlaceholder.style.display = 'block';
             }
         });
 
-        // Optional: Add drag and drop functionality
-        const previewContainer = document.getElementById('imagePreviewContainer');
+        // Helper function to format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
 
+        // Drag and drop functionality
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             previewContainer.addEventListener(eventName, preventDefaults, false);
         });
@@ -250,11 +242,13 @@
         function highlight(e) {
             previewContainer.classList.add('border-primary');
             previewContainer.classList.add('bg-primary-light');
+            noImagePlaceholder.innerHTML = '<i class="fas fa-cloud-upload-alt fa-3x text-primary mb-2"></i><p class="text-primary">Drop image here</p>';
         }
 
         function unhighlight(e) {
             previewContainer.classList.remove('border-primary');
             previewContainer.classList.remove('bg-primary-light');
+            noImagePlaceholder.innerHTML = '<i class="fas fa-image fa-3x text-muted mb-2"></i><p class="text-muted">No image selected</p><p class="text-muted small">Select an image to preview</p>';
         }
 
         previewContainer.addEventListener('drop', function(e) {
@@ -262,13 +256,32 @@
             const files = dt.files;
 
             if (files.length > 0) {
-                imageInput.files = files;
+                const file = files[0];
+
+                // Validate it's an image
+                if (!file.type.match('image.*')) {
+                    alert('Please drop an image file (JPEG, PNG, GIF, etc.)');
+                    return;
+                }
+
+                // Set the file to the input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                imageInput.files = dataTransfer.files;
 
                 // Trigger change event manually
                 const event = new Event('change', {
                     bubbles: true
                 });
                 imageInput.dispatchEvent(event);
+            }
+        });
+
+        // Optional: Click on preview to trigger file input
+        previewContainer.addEventListener('click', function(e) {
+            if (e.target === previewContainer || e.target === noImagePlaceholder ||
+                e.target.closest('#noImagePlaceholder')) {
+                imageInput.click();
             }
         });
     });
@@ -289,6 +302,13 @@
         transform: scale(1.02);
     }
 
+    #imagePreviewContainer {
+        cursor: pointer;
+        min-height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     #noImagePlaceholder {
         transition: all 0.3s ease;

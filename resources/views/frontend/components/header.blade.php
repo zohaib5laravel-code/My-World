@@ -11,19 +11,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Home</a>
+                    <a class="nav-link {{Request::is('/')?'active':''}}" href="{{route('frontend.home')}}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#gallery">Gallery</a>
+                    <a class="nav-link {{Request::is('gallery')?'active':''}}" href="{{route('frontend.gallery')}}">Gallery</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#posts">Posts</a>
+                    <a class="nav-link {{Request::is('posts')?'active':''}}" href="{{route('frontend.posts')}}">Posts</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#about">About</a>
+                    <a class="nav-link {{Request::is('about')?'active':''}}" href="{{route('frontend.about')}}">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contact</a>
+                    <a class="nav-link {{Request::is('contact')?'active':''}}" href="{{route('frontend.contact')}}">Contact</a>
                 </li>
             </ul>
         </div>

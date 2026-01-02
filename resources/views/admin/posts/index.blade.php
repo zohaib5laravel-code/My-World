@@ -1,4 +1,4 @@
-@extends('layouts/app')
+@extends('admin/app')
 @section('content')
 
 <main class="app-main">
@@ -9,12 +9,12 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Categories</h3>
+                    <h3 class="mb-0">Posts</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Categories</li>
+                        <li class="breadcrumb-item active" aria-current="page">Posts</li>
                     </ol>
                 </div>
             </div>
@@ -30,9 +30,9 @@
 
             <div class="card mb-4">
                 <div class="card-header">
-                    <h3 class="card-title">Categories Table</h3>
+                    <h3 class="card-title">Posts Table</h3>
 
-                    <a href="{{route('categories.create')}}" class="btn btn-primary " style="float:right">Add New</a>
+                    <a href="{{route('posts.create')}}" class="btn btn-primary " style="float:right">Add New</a>
                 </div>
 
 
@@ -40,7 +40,8 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Title</th>
+                                <th>Category</th>
                                 <th>Image</th>
                                 <th>Status</th>
                                 <th>Created On</th>
@@ -49,15 +50,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($categories as $category)
+                            @forelse($posts as $post)
                             <tr class="align-middle">
                           
-                               <td>{{$category->name}}</td>
-                            <td>
-                                    <img src="{{asset('assets/categories/'.$category->image)}}" width="130" alt="$category->image">
+                                <td>{{ucfirst($post->title)}}</td>
+                                <td>{{ucfirst($post->category->name)}}</td>
+                                <td>
+                                    <img src="{{asset('assets/posts/'.$post->image)}}" width="130" alt="$post->image">
                                 </td>
                                 <td>
-                                    @if($category->status == 1)
+                                    @if($post->status == 1)
                                     <span class="badge text-bg-success">Active</span>
                                     @else 
                                     <span class="badge text-bg-danger">Inactive</span>
@@ -65,16 +67,16 @@
                                 </td>
 
                                 <td>
-                                    {{date('M j, Y', strtotime($category->created_at))}}
+                                    {{date('M j, Y', strtotime($post->created_at))}}
                                 </td>
                                 <td>
-                                    <a href="{{route('categories.edit', $category->id)}}"><i class="bi bi-pencil-square btn btn-info"></i></a>
-                                    <a href="#" onclick="deleteCategory('{{$category->id}}')"><i class="bi bi-trash btn btn-danger"></i></a>
+                                    <a href="{{route('posts.edit', $post->id)}}"><i class="bi bi-pencil-square btn btn-info"></i></a>
+                                    <a href="#" onclick="deletepost('{{$post->id}}')"><i class="bi bi-trash btn btn-danger"></i></a>
                                 </td>
                             </tr>
                             @empty
                             <tr class="align-middle">
-                                <td colspan="5" class="text-center">No data found.</td>
+                                <td colspan="6" class="text-center">No data found.</td>
                             </tr>
                             @endforelse
 
@@ -95,7 +97,7 @@
 
 @section('scripts')
 <script>
-    function deleteCategory(id)
+    function deletepost(id)
     {
         Swal.fire({
             'title':'Are you sure?',
@@ -105,7 +107,7 @@
         }).then((res)=>{
             if(res.isConfirmed){
                 $.ajax({
-                    url: "{{url('categories/delete')}}/"+id,
+                    url: "{{url('posts/delete')}}/"+id,
                     type: "DELETE",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -113,7 +115,7 @@
                     success: function() {
                         Swal.fire(
                             "Deleted!",
-                            "Category deleted successfully",
+                            "Post deleted successfully",
                             "success",
                         ).then(()=>{
                             location.reload();

@@ -1,4 +1,4 @@
-@extends('layouts/app')
+@extends('admin/app')
 @section('content')
 
 <main class="app-main">
@@ -9,13 +9,13 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Add Post</h3>
+                    <h3 class="mb-0">Add Picture</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('posts.index')}}">Posts</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Add Post</li>
+                        <li class="breadcrumb-item"><a href="{{route('pictures.index')}}">Pictures</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Picture</li>
                     </ol>
                 </div>
             </div>
@@ -33,12 +33,12 @@
                     <div class="card card-primary card-outline">
                         <!--begin::Card Header-->
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Add New Post</h5>
+                            <h5 class="card-title mb-0">Add New Picture</h5>
                         </div>
                         <!--end::Card Header-->
 
                         <!--begin::Form-->
-                        <form action="{{route('posts.store')}}" method="post" enctype="multipart/form-data">
+                        <form action="{{route('pictures.store')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <!--begin::Card Body-->
                             <div class="card-body">
@@ -46,18 +46,11 @@
                                     <!-- Form Inputs Column -->
                                     <div class="col-lg-8">
                                         <div class="row">
-                                            <div class="col-lg-12 mb-3">
-                                                <label class="form-label" for="title">Title <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="title" id="title" required />
-                                            </div>
-
                                             <div class="col-lg-6 mb-3">
-                                                <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
-                                                <select name="category_id" class="form-control" required>
-                                                    <option value="">--Select Categoty--</option>
-                                                    @foreach($categories as $category)
-                                                    <option value="{{$category->id}}">{{$category->name}}</option>
-                                                    @endforeach
+                                                <label for="type" class="form-label">Type <span class="text-danger">*</span></label>
+                                                <select name="type" class="form-control" required>
+                                                    <option value="gallery">Gallery</option>
+                                                    <option value="banner">Banner</option>
                                                 </select>
                                             </div>
 
@@ -68,9 +61,10 @@
                                             </div>
 
                                             <div class="col-12 mb-3">
-                                                <label class="form-label" for="body">Body <span class="text-danger">*</span></label>
-                                                <textarea class="form-control" id="body" name="body" placeholder="Post Body"></textarea>
-                                                <small class="text-danger ps-2 d-none" id="bodyErr">Add content in the body</small>
+                                                <label class="form-label" for="text_over_img">Text Over Image</label>
+                                                <input type="text" class="form-control" name="text_over_img" id="text_over_img" />
+                                               <textarea class="form-control" id="body" name="text_over_img" ></textarea>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -111,8 +105,8 @@
                             <!--begin::Card Footer-->
                             <div class="card-footer">
                                 <div class="d-flex ">
-                                    <a href="{{route('posts.index')}}" class="btn btn-outline-secondary me-2">Cancel</a>
-                                    <button type="submit" class="btn btn-primary">Add Post</button>
+                                    <a href="{{route('pictures.index')}}" class="btn btn-outline-secondary me-2">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Add Picture</button>
                                 </div>
                             </div>
                             <!--end::Card Footer-->
@@ -139,13 +133,6 @@
         .create(document.querySelector('#body'))
         .then(ed => {
             editor = ed;
-
-            editor.model.document.on('change:data', () => {
-                const bodyErr = document.getElementById('bodyErr');
-                if (editor.getData().trim() !== "") {
-                    bodyErr.classList.add('d-none');
-                }
-            });
         })
         .catch(error => console.error(error));
 

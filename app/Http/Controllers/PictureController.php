@@ -10,12 +10,12 @@ class PictureController extends Controller
     public function index()
     {
         $pictures = Picture::paginate(10);
-        return view('pictures.index', compact('pictures'));
+        return view('admin.pictures.index', compact('pictures'));
     }
 
     public function create()
     {
-        return view('pictures.create');
+        return view('admin.pictures.create');
     }
 
     public function store(Request $request)
@@ -44,7 +44,7 @@ class PictureController extends Controller
     {
         $picture = Picture::find($id);
         if ($picture) {
-            return view('pictures.show', compact('picture'));
+            return view('admin.pictures.show', compact('picture'));
         } else {
             return redirect()->route('pictures.index')
                 ->with('error', 'Picture not found');
@@ -55,7 +55,7 @@ class PictureController extends Controller
     {
         $picture = Picture::find($id);
         if ($picture) {
-            return view('pictures.edit', compact('picture'));
+            return view('admin.pictures.edit', compact('picture'));
         } else {
             return redirect()->route('pictures.index')
                 ->with('error', 'Picture not found');

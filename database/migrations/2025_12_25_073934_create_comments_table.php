@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('post_id');
             $table->string('name');
-            $table->longText('body');
+            $table->longText('comment');
+            $table->string('ip_address');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

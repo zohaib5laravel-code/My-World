@@ -11,13 +11,13 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::paginate(10);
-        return view('posts.index', compact('posts'));
+        return view('admin.posts.index', compact('posts'));
     }
 
     public function create()
     {
         $categories = Category::where('status', 1)->get();
-        return view('posts.create', compact('categories'));
+        return view('admin.posts.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -47,7 +47,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         if ($post) {
-            return view('posts.show', compact('post'));
+            return view('admin.posts.show', compact('post'));
         } else {
             return redirect()->route('posts.index')
                 ->with('error', 'Post not found');
@@ -59,7 +59,7 @@ class PostController extends Controller
         $post = Post::find($id);
         $categories = Category::where('status', 1)->get();
         if ($post) {
-            return view('posts.edit', compact('post','categories'));
+            return view('admin.posts.edit', compact('post','categories'));
         } else {
             return redirect()->route('posts.index')
                 ->with('error', 'Post not found');

@@ -15,11 +15,11 @@
                 <div class="col-lg-4 mb-4">
                     <h4 class="mb-4">Quick Links</h4>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="{{route('frontend.home')}}" class="text-light text-decoration-none">Home</a></li>
                         <li class="mb-2"><a href="#gallery" class="text-light text-decoration-none">Gallery</a></li>
-                        <li class="mb-2"><a href="#posts" class="text-light text-decoration-none">Posts</a></li>
-                        <li class="mb-2"><a href="#about" class="text-light text-decoration-none">About</a></li>
-                        <li class="mb-2"><a href="#contact" class="text-light text-decoration-none">Contact</a></li>
+                        <li class="mb-2"><a href="{{route('frontend.posts')}}" class="text-light text-decoration-none">Posts</a></li>
+                        <li class="mb-2"><a href="{{route('frontend.about')}}" class="text-light text-decoration-none">About</a></li>
+                        <li class="mb-2"><a href="{{route('frontend.contact')}}" class="text-light text-decoration-none">Contact</a></li>
 
                     </ul>
                 </div>
