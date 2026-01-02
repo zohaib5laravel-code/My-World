@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PictureController;
 use App\Http\Controllers\PostController;
@@ -28,7 +29,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('pictures/{id}/edit', [PictureController::class, 'edit'])->name('pictures.edit');
     Route::patch('pictures/{id}/update', [PictureController::class, 'update'])->name('pictures.update');
     Route::delete('pictures/delete/{id}', [PictureController::class, 'delete'])->name('pictures.delete');
-   
+
     //categories
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
@@ -44,15 +45,18 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('posts/store', [PostController::class, 'store'])->name('posts.store');
     Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
     Route::get('posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
-    Route::patch('posts/{id}/update', [PostController::class, 'update'])->name('posts.update');
+    Route::put('posts/{id}/update', [PostController::class, 'update'])->name('posts.update');
     Route::delete('posts/delete/{id}', [PostController::class, 'delete'])->name('posts.delete');
-
-
+    
+    //comments
+    Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
+    Route::get('comments/{id}/updateStatus', [CommentController::class, 'updateStatus'])->name('comments.updateStatus');
+    Route::delete('comments/delete/{id}', [CommentController::class, 'delete'])->name('comments.delete');
 
 
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 

@@ -105,7 +105,7 @@
         }).then((res)=>{
             if(res.isConfirmed){
                 $.ajax({
-                    url: "{{url('categories/delete')}}/"+id,
+                    url: "{{url('admin/categories/delete')}}/"+id,
                     type: "DELETE",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

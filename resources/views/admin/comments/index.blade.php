@@ -9,12 +9,12 @@
             <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Pictures</h3>
+                    <h3 class="mb-0">Comments</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Pictures</li>
+                        <li class="breadcrumb-item active" aria-current="page">Comments</li>
                     </ol>
                 </div>
             </div>
@@ -30,9 +30,9 @@
 
             <div class="card mb-4">
                 <div class="card-header">
-                    <h3 class="card-title">Pictures Table</h3>
+                    <h3 class="card-title">Posts Table</h3>
 
-                    <a href="{{route('pictures.create')}}" class="btn btn-primary " style="float:right">Add New</a>
+                    <a href="{{route('posts.create')}}" class="btn btn-primary " style="float:right">Add New</a>
                 </div>
 
 
@@ -40,8 +40,10 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Type</th>
+                                <th>Title</th>
+                                <th>Category</th>
                                 <th>Image</th>
+                                <th>Comments</th>
                                 <th>Status</th>
                                 <th>Created On</th>
                                 <th>Actions</th>
@@ -49,15 +51,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($pictures as $picture)
+                            @forelse($posts as $post)
                             <tr class="align-middle">
                           
-                                <td>{{ucfirst($picture->type)}}</td>
+                                <td>{{ucfirst($post->title)}}</td>
+                                <td>{{ucfirst($post->category->name)}}</td>
                                 <td>
-                                    <img src="{{asset('assets/pictures/'.$picture->image)}}" loading="lazy" width="130" alt="$picture->image">
+                                    <img src="{{asset('assets/posts/'.$post->image)}}" width="130" alt="$post->image">
+                                </td>
+                                <td class="text-center">
+                                    <a href="">{{ $post->comments->count() }}</a>
                                 </td>
                                 <td>
-                                    @if($picture->status == 1)
+                                    @if($post->status == 1)
                                     <span class="badge text-bg-success">Active</span>
                                     @else 
                                     <span class="badge text-bg-danger">Inactive</span>
@@ -65,16 +71,16 @@
                                 </td>
 
                                 <td>
-                                    {{date('M j, Y', strtotime($picture->created_at))}}
+                                    {{date('M j, Y', strtotime($post->created_at))}}
                                 </td>
                                 <td>
-                                    <a href="{{route('pictures.edit', $picture->id)}}"><i class="bi bi-pencil-square btn btn-info"></i></a>
-                                    <a href="#" onclick="deletePicture('{{$picture->id}}')"><i class="bi bi-trash btn btn-danger"></i></a>
+                                    <a href="{{route('posts.edit', $post->id)}}"><i class="bi bi-pencil-square btn btn-info"></i></a>
+                                    <a href="#" onclick="deletepost('{{$post->id}}')"><i class="bi bi-trash btn btn-danger"></i></a>
                                 </td>
                             </tr>
                             @empty
                             <tr class="align-middle">
-                                <td colspan="5" class="text-center">No data found.</td>
+                                <td colspan="6" class="text-center">No data found.</td>
                             </tr>
                             @endforelse
 
@@ -95,7 +101,7 @@
 
 @section('scripts')
 <script>
-    function deletePicture(id)
+    function deletepost(id)
     {
         Swal.fire({
             'title':'Are you sure?',
@@ -105,7 +111,7 @@
         }).then((res)=>{
             if(res.isConfirmed){
                 $.ajax({
-                    url: "{{url('admin/pictures/delete')}}/"+id,
+                    url: "{{url('posts/delete')}}/"+id,
                     type: "DELETE",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -113,7 +119,7 @@
                     success: function() {
                         Swal.fire(
                             "Deleted!",
-                            "Picture deleted successfully",
+                            "Post deleted successfully",
                             "success",
                         ).then(()=>{
                             location.reload();

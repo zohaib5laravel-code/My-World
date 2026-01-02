@@ -48,29 +48,88 @@
                                         <div class="row">
                                             <div class="col-lg-12 mb-3">
                                                 <label class="form-label" for="title">Title <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="title" id="title" required />
+                                                <input type="text" class="form-control" name="title" id="title" required 
+                                                       value="{{ old('title') }}" />
+                                                @error('title')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <div class="col-lg-6 mb-3">
-                                                <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
-                                                <select name="category_id" class="form-control" required>
-                                                    <option value="">--Select Categoty--</option>
+                                                <label for="category_id" class="form-label">Category</label>
+                                                <select name="category_id" class="form-control">
+                                                    <option value="">--Select Category--</option>
                                                     @foreach($categories as $category)
-                                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                                    <option value="{{$category->id}}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                        {{$category->name}}
+                                                    </option>
                                                     @endforeach
                                                 </select>
+                                                @error('category_id')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <div class="col-lg-6 mb-3">
-                                                <label class="form-label" for="image">Image <span class="text-danger">*</span></label>
-                                                <input type="file" class="form-control" name="image" id="imageInput" accept="image/*" required />
-                                                <div class="form-text">Upload an image file (JPEG, PNG, GIF, etc.) Max 5MB.</div>
+                                                <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                                                <select name="status" class="form-control" required>
+                                                    <option value="draft" {{ old('status') == 'draft' ? 'selected' : 'selected' }}>Draft</option>
+                                                    <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>Published</option>
+                                                    <option value="archived" {{ old('status') == 'archived' ? 'selected' : '' }}>Archived</option>
+                                                </select>
+                                                @error('status')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-lg-12 mb-3">
+                                                <label class="form-label" for="excerpt">Excerpt</label>
+                                                <textarea class="form-control" name="excerpt" id="excerpt" 
+                                                          rows="3" placeholder="Short excerpt of the post">{{ old('excerpt') }}</textarea>
+                                                <div class="form-text">A brief summary of your post (max 500 characters).</div>
+                                                @error('excerpt')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <div class="col-12 mb-3">
-                                                <label class="form-label" for="body">Body <span class="text-danger">*</span></label>
-                                                <textarea class="form-control" id="body" name="body" placeholder="Post Body"></textarea>
-                                                <small class="text-danger ps-2 d-none" id="bodyErr">Add content in the body</small>
+                                                <label class="form-label" for="content">Content <span class="text-danger">*</span></label>
+                                                <textarea class="form-control" id="content" name="content" 
+                                                          placeholder="Post Content">{{ old('content') }}</textarea>
+                                                <small class="text-danger ps-2 d-none" id="contentErr">Add content in the body</small>
+                                                @error('content')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-lg-6 mb-3">
+                                                <label class="form-label" for="featured_image">Featured Image <span class="text-danger">*</span></label>
+                                                <input type="file" class="form-control" name="featured_image" 
+                                                       id="featuredImageInput" accept="image/*" required />
+                                                <div class="form-text">Upload a featured image (JPEG, PNG, GIF, etc.) Max 2MB.</div>
+                                                @error('featured_image')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-lg-6 mb-3">
+                                                <label class="form-label" for="images">Post Gallery Images</label>
+                                                <input type="file" class="form-control" name="images[]" 
+                                                       id="galleryImagesInput" accept="image/*" multiple />
+                                                <div class="form-text">Upload additional images for post gallery (optional).</div>
+                                                @error('images')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-lg-6 mb-3">
+                                                <label class="form-label" for="published_at">Publish Date/Time</label>
+                                                <input type="datetime-local" class="form-control" name="published_at" 
+                                                       id="published_at" value="{{ old('published_at') }}" />
+                                                <div class="form-text">Schedule when to publish the post (leave empty for immediate publication).</div>
+                                                @error('published_at')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -78,28 +137,45 @@
 
                                     <!-- Image Preview Column -->
                                     <div class="col-lg-4">
-                                        <div class="border rounded p-3 bg-light">
-                                            <h6 class="mb-3 text-center">Image Preview</h6>
-                                            <div class="text-center" id="imagePreviewContainer">
+                                        <div class="border rounded p-3 bg-light mb-4">
+                                            <h6 class="mb-3 text-center">Featured Image Preview</h6>
+                                            <div class="text-center" id="featuredImagePreviewContainer">
                                                 <!-- Default placeholder when no image is selected -->
-                                                <div id="noImagePlaceholder">
+                                                <div id="noFeaturedImagePlaceholder">
                                                     <i class="fas fa-image fa-3x text-muted mb-2"></i>
                                                     <p class="text-muted">No image selected</p>
-                                                    <p class="text-muted small">Select an image to preview</p>
+                                                    <p class="text-muted small">Select a featured image to preview</p>
                                                 </div>
 
                                                 <!-- Image preview (initially hidden) -->
-                                                <div id="imagePreview" class="d-none">
-                                                    <img id="previewImage"
+                                                <div id="featuredImagePreview" class="d-none">
+                                                    <img id="previewFeaturedImage"
                                                         src="#"
-                                                        alt="Image Preview"
+                                                        alt="Featured Image Preview"
                                                         class="img-fluid rounded border preview-image"
                                                         style="max-height: 200px;">
-                                                    <div class="mt-2 text-center text-muted small" id="fileName"></div>
+                                                    <div class="mt-2 text-center text-muted small" id="featuredFileName"></div>
                                                     <div class="mt-2">
                                                         <small class="text-success"><i class="fas fa-check-circle me-1"></i>Ready to upload</small>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="border rounded p-3 bg-light">
+                                            <h6 class="mb-3 text-center">Post Gallery Images</h6>
+                                            <div id="galleryPreviewContainer">
+                                                <div id="noGalleryImagesPlaceholder" class="text-center">
+                                                    <i class="fas fa-images fa-3x text-muted mb-2"></i>
+                                                    <p class="text-muted">No post gallery images</p>
+                                                    <p class="text-muted small">Select multiple images</p>
+                                                </div>
+                                                <div id="galleryImagesPreview" class="row g-2 d-none">
+                                                    <!-- Post Gallery images will be previewed here -->
+                                                </div>
+                                            </div>
+                                            <div class="mt-3 text-center">
+                                                <small class="text-muted" id="galleryCount">0 images selected</small>
                                             </div>
                                         </div>
                                     </div>
@@ -136,31 +212,41 @@
     let editor;
 
     ClassicEditor
-        .create(document.querySelector('#body'))
+        .create(document.querySelector('#content'))
         .then(ed => {
             editor = ed;
 
             editor.model.document.on('change:data', () => {
-                const bodyErr = document.getElementById('bodyErr');
+                const contentErr = document.getElementById('contentErr');
                 if (editor.getData().trim() !== "") {
-                    bodyErr.classList.add('d-none');
+                    contentErr.classList.add('d-none');
                 }
             });
         })
         .catch(error => console.error(error));
 
     document.addEventListener('DOMContentLoaded', function() {
-        const imageInput = document.getElementById('imageInput');
-        const previewImage = document.getElementById('previewImage');
-        const imagePreview = document.getElementById('imagePreview');
-        const noImagePlaceholder = document.getElementById('noImagePlaceholder');
-        const fileName = document.getElementById('fileName');
-        const previewContainer = document.getElementById('imagePreviewContainer');
+        // Featured Image Preview
+        const featuredImageInput = document.getElementById('featuredImageInput');
+        const previewFeaturedImage = document.getElementById('previewFeaturedImage');
+        const featuredImagePreview = document.getElementById('featuredImagePreview');
+        const noFeaturedImagePlaceholder = document.getElementById('noFeaturedImagePlaceholder');
+        const featuredFileName = document.getElementById('featuredFileName');
+        const featuredImagePreviewContainer = document.getElementById('featuredImagePreviewContainer');
 
-        // Preview image when file is selected
-        imageInput.addEventListener('change', function() {
-            const file = this.files[0];
+        // Gallery Images Preview
+        const galleryImagesInput = document.getElementById('galleryImagesInput');
+        const galleryImagesPreview = document.getElementById('galleryImagesPreview');
+        const noGalleryImagesPlaceholder = document.getElementById('noGalleryImagesPlaceholder');
+        const galleryCount = document.getElementById('galleryCount');
+        const galleryPreviewContainer = document.getElementById('galleryPreviewContainer');
 
+        // Featured Image Preview Functionality
+        featuredImageInput.addEventListener('change', function() {
+            handleFeaturedImagePreview(this.files[0]);
+        });
+
+        function handleFeaturedImagePreview(file) {
             if (file) {
                 // Validate file type
                 if (!file.type.match('image.*')) {
@@ -169,9 +255,9 @@
                     return;
                 }
 
-                // Validate file size (max 5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('File size must be less than 5MB');
+                // Validate file size (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Featured image size must be less than 2MB');
                     this.value = '';
                     return;
                 }
@@ -180,37 +266,147 @@
 
                 reader.addEventListener('load', function() {
                     // Update preview image
-                    previewImage.src = reader.result;
-                    fileName.textContent = file.name;
+                    previewFeaturedImage.src = reader.result;
+                    featuredFileName.textContent = file.name;
 
                     // Calculate and display image dimensions
                     const img = new Image();
                     img.onload = function() {
                         const dimensionsText = `${this.width} × ${this.height} pixels`;
                         const sizeText = formatFileSize(file.size);
-                        fileName.innerHTML = `${file.name}<br><small class="text-muted">${dimensionsText} • ${sizeText}</small>`;
+                        featuredFileName.innerHTML = `${file.name}<br><small class="text-muted">${dimensionsText} • ${sizeText}</small>`;
                     };
                     img.src = reader.result;
 
                     // Hide placeholder and show preview
-                    noImagePlaceholder.style.display = 'none';
-                    imagePreview.classList.remove('d-none');
+                    noFeaturedImagePlaceholder.style.display = 'none';
+                    featuredImagePreview.classList.remove('d-none');
 
                     // Add animation effect
-                    imagePreview.style.opacity = '0';
-                    imagePreview.style.transition = 'opacity 0.3s ease';
+                    featuredImagePreview.style.opacity = '0';
+                    featuredImagePreview.style.transition = 'opacity 0.3s ease';
                     setTimeout(() => {
-                        imagePreview.style.opacity = '1';
+                        featuredImagePreview.style.opacity = '1';
                     }, 10);
                 });
 
                 reader.readAsDataURL(file);
             } else {
                 // If no file selected, show the placeholder again
-                imagePreview.classList.add('d-none');
-                noImagePlaceholder.style.display = 'block';
+                featuredImagePreview.classList.add('d-none');
+                noFeaturedImagePlaceholder.style.display = 'block';
             }
+        }
+
+        // Gallery Images Preview Functionality
+        galleryImagesInput.addEventListener('change', function() {
+            handleGalleryImagesPreview(this.files);
         });
+
+        function handleGalleryImagesPreview(files) {
+            if (files && files.length > 0) {
+                // Clear previous preview
+                galleryImagesPreview.innerHTML = '';
+                
+                // Validate each file
+                const validFiles = [];
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    if (!file.type.match('image.*')) {
+                        alert(`File "${file.name}" is not an image. Only image files are allowed.`);
+                        continue;
+                    }
+                    
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert(`File "${file.name}" is too large. Max size is 5MB.`);
+                        continue;
+                    }
+                    
+                    validFiles.push(file);
+                }
+                
+                if (validFiles.length === 0) {
+                    galleryImagesInput.value = '';
+                    galleryImagesPreview.classList.add('d-none');
+                    noGalleryImagesPlaceholder.classList.remove('d-none');
+                    galleryCount.textContent = '0 images selected';
+                    return;
+                }
+
+                // Update count
+                galleryCount.textContent = `${validFiles.length} image${validFiles.length > 1 ? 's' : ''} selected`;
+
+                // Process each valid file
+                validFiles.forEach((file, index) => {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        // Create preview element
+                        const col = document.createElement('div');
+                        col.className = 'col-6 col-md-4';
+                        
+                        const previewDiv = document.createElement('div');
+                        previewDiv.className = 'gallery-preview-item position-relative';
+                        
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'img-fluid rounded border';
+                        img.style.maxHeight = '80px';
+                        img.style.objectFit = 'cover';
+                        img.style.width = '100%';
+                        
+                        const removeBtn = document.createElement('button');
+                        removeBtn.type = 'button';
+                        removeBtn.className = 'btn btn-sm btn-danger position-absolute top-0 end-0';
+                        removeBtn.style.transform = 'translate(30%, -30%)';
+                        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                        removeBtn.onclick = function() {
+                            removeGalleryImage(index);
+                        };
+                        
+                        const fileName = document.createElement('div');
+                        fileName.className = 'small text-truncate mt-1';
+                        fileName.textContent = file.name.length > 15 ? file.name.substring(0, 15) + '...' : file.name;
+                        
+                        previewDiv.appendChild(img);
+                        previewDiv.appendChild(removeBtn);
+                        previewDiv.appendChild(fileName);
+                        col.appendChild(previewDiv);
+                        galleryImagesPreview.appendChild(col);
+                    };
+
+                    reader.readAsDataURL(file);
+                });
+
+                // Show preview and hide placeholder
+                galleryImagesPreview.classList.remove('d-none');
+                noGalleryImagesPlaceholder.classList.add('d-none');
+            } else {
+                // If no files selected, show the placeholder again
+                galleryImagesPreview.classList.add('d-none');
+                noGalleryImagesPlaceholder.classList.remove('d-none');
+                galleryCount.textContent = '0 images selected';
+            }
+        }
+
+        function removeGalleryImage(index) {
+            const dt = new DataTransfer();
+            const files = galleryImagesInput.files;
+            
+            // Create new file list without the removed file
+            for (let i = 0; i < files.length; i++) {
+                if (i !== index) {
+                    dt.items.add(files[i]);
+                }
+            }
+            
+            // Update the input files
+            galleryImagesInput.files = dt.files;
+            
+            // Re-render the preview
+            handleGalleryImagesPreview(galleryImagesInput.files);
+        }
 
         // Helper function to format file size
         function formatFileSize(bytes) {
@@ -221,9 +417,9 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // Drag and drop functionality
+        // Drag and drop functionality for featured image
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            previewContainer.addEventListener(eventName, preventDefaults, false);
+            featuredImagePreviewContainer.addEventListener(eventName, preventDefaults, false);
         });
 
         function preventDefaults(e) {
@@ -232,26 +428,26 @@
         }
 
         ['dragenter', 'dragover'].forEach(eventName => {
-            previewContainer.addEventListener(eventName, highlight, false);
+            featuredImagePreviewContainer.addEventListener(eventName, highlightFeatured, false);
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
-            previewContainer.addEventListener(eventName, unhighlight, false);
+            featuredImagePreviewContainer.addEventListener(eventName, unhighlightFeatured, false);
         });
 
-        function highlight(e) {
-            previewContainer.classList.add('border-primary');
-            previewContainer.classList.add('bg-primary-light');
-            noImagePlaceholder.innerHTML = '<i class="fas fa-cloud-upload-alt fa-3x text-primary mb-2"></i><p class="text-primary">Drop image here</p>';
+        function highlightFeatured(e) {
+            featuredImagePreviewContainer.classList.add('border-primary');
+            featuredImagePreviewContainer.classList.add('bg-primary-light');
+            noFeaturedImagePlaceholder.innerHTML = '<i class="fas fa-cloud-upload-alt fa-3x text-primary mb-2"></i><p class="text-primary">Drop image here</p>';
         }
 
-        function unhighlight(e) {
-            previewContainer.classList.remove('border-primary');
-            previewContainer.classList.remove('bg-primary-light');
-            noImagePlaceholder.innerHTML = '<i class="fas fa-image fa-3x text-muted mb-2"></i><p class="text-muted">No image selected</p><p class="text-muted small">Select an image to preview</p>';
+        function unhighlightFeatured(e) {
+            featuredImagePreviewContainer.classList.remove('border-primary');
+            featuredImagePreviewContainer.classList.remove('bg-primary-light');
+            noFeaturedImagePlaceholder.innerHTML = '<i class="fas fa-image fa-3x text-muted mb-2"></i><p class="text-muted">No image selected</p><p class="text-muted small">Select an image to preview</p>';
         }
 
-        previewContainer.addEventListener('drop', function(e) {
+        featuredImagePreviewContainer.addEventListener('drop', function(e) {
             const dt = e.dataTransfer;
             const files = dt.files;
 
@@ -267,23 +463,28 @@
                 // Set the file to the input
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(file);
-                imageInput.files = dataTransfer.files;
+                featuredImageInput.files = dataTransfer.files;
 
-                // Trigger change event manually
-                const event = new Event('change', {
-                    bubbles: true
-                });
-                imageInput.dispatchEvent(event);
+                // Trigger preview manually
+                handleFeaturedImagePreview(file);
             }
         });
 
         // Optional: Click on preview to trigger file input
-        previewContainer.addEventListener('click', function(e) {
-            if (e.target === previewContainer || e.target === noImagePlaceholder ||
-                e.target.closest('#noImagePlaceholder')) {
-                imageInput.click();
+        featuredImagePreviewContainer.addEventListener('click', function(e) {
+            if (e.target === featuredImagePreviewContainer || e.target === noFeaturedImagePlaceholder ||
+                e.target.closest('#noFeaturedImagePlaceholder')) {
+                featuredImageInput.click();
             }
         });
+
+        // Set default publish date/time to now
+        const now = new Date();
+        const timezoneOffset = now.getTimezoneOffset() * 60000; // Offset in milliseconds
+        const localISOTime = new Date(now - timezoneOffset).toISOString().slice(0, 16);
+        if (!document.getElementById('published_at').value) {
+            document.getElementById('published_at').value = localISOTime;
+        }
     });
 </script>
 
@@ -302,16 +503,40 @@
         transform: scale(1.02);
     }
 
-    #imagePreviewContainer {
+    #featuredImagePreviewContainer,
+    #galleryPreviewContainer {
         cursor: pointer;
-        min-height: 250px;
+        min-height: 200px;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
     }
 
-    #noImagePlaceholder {
+    #noFeaturedImagePlaceholder,
+    #noGalleryImagesPlaceholder {
         transition: all 0.3s ease;
+    }
+
+    .gallery-preview-item {
+        margin-bottom: 10px;
+    }
+
+    .gallery-preview-item img {
+        transition: transform 0.2s ease;
+    }
+
+    .gallery-preview-item:hover img {
+        transform: scale(1.05);
+    }
+
+    .gallery-preview-item button {
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .gallery-preview-item:hover button {
+        opacity: 1;
     }
 </style>
 @endsection

@@ -88,10 +88,10 @@
                     @foreach($posts as $post)
                     <div class="col-md-6 col-lg-6 mb-4">
                         <div class="post-card">
-                            <!-- Post Image -->
-                            @if($post->image)
+                            <!-- Post featured image -->
+                            @if($post->featured_image)
                             <div class="post-card-img-container" style="height: 220px; overflow: hidden;">
-                                <img src="{{ asset('assets/posts/' . $post->image) }}"
+                                <img src="{{ asset('assets/posts/' . $post->featured_image) }}"
                                     alt="{{ $post->title }}"
                                     class="post-card-img">
                             </div>
@@ -120,13 +120,13 @@
                                 </p>
 
                                 <div class="post-meta">
-                                    <i class="far fa-user"></i> {{ $post->user->name ?? 'Admin' }}
+                                    <!-- <i class="far fa-user"></i> {{ $post->user->name ?? 'Admin' }} -->
                                     <i class="far fa-calendar ms-3"></i> {{ $post->created_at->format('M d, Y') }}
                                     <i class="far fa-eye ms-3"></i> {{ $post->views }}
                                     <i class="far fa-comment ms-3"></i> {{ $post->approvedComments()->count() }}
                                 </div>
 
-                                <a href="{{ route('frontend.post', $post) }}" class="btn btn-outline-primary btn-sm">
+                                <a href="{{ route('frontend.post', $post->slug) }}" class="btn btn-outline-primary btn-sm">
                                     Read More <i class="fas fa-arrow-right ms-1"></i>
                                 </a>
                             </div>
@@ -218,8 +218,8 @@
                     <h4 class="widget-title">Popular Posts</h4>
                     @foreach($popularPosts as $popularPost)
                     <div class="popular-post">
-                        @if($popularPost->image)
-                        <img src="{{ asset('assets/posts/' . $popularPost->image) }}"
+                        @if($popularPost->featured_image)
+                        <img src="{{ asset('assets/posts/' . $popularPost->featured_image) }}"
                             alt="{{ $popularPost->title }}"
                             class="popular-post-img">
                         @else

@@ -72,7 +72,7 @@
                             data-image="{{ asset('assets/pictures/' . $picture->image) }}"
                             data-title="{{ $picture->title }}"
                             data-description="{{ $picture->description }}"
-                            data-text-over-img="{{ $picture->text_over_img }}"
+                            data-text-over-img="{{ $picture->title }}"
                             data-date="{{ $picture->created_at->format('M d, Y') }}"
                             data-index="{{ $index }}">
                             <img src="{{ asset('assets/pictures/' . $picture->image) }}"
@@ -80,7 +80,7 @@
                                 class="gallery-img">
                         </a>
                         <div class="gallery-info">
-                            <h3 class="gallery-title">{{ $picture->text_over_img }}</h3>
+                            <h3 class="gallery-title">{{ $picture->title }}</h3>
                             @if($picture->description)
                             <p class="gallery-description">{{ $picture->description }}</p>
                             @endif

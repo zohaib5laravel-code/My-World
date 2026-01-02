@@ -42,7 +42,8 @@
                             <tr>
                                 <th>Title</th>
                                 <th>Category</th>
-                                <th>Image</th>
+                                <th>Featured Image</th>
+                                <th>Comments</th>
                                 <th>Status</th>
                                 <th>Created On</th>
                                 <th>Actions</th>
@@ -56,14 +57,13 @@
                                 <td>{{ucfirst($post->title)}}</td>
                                 <td>{{ucfirst($post->category->name)}}</td>
                                 <td>
-                                    <img src="{{asset('assets/posts/'.$post->image)}}" width="130" alt="$post->image">
+                                    <img src="{{asset('assets/posts/'.$post->featured_image)}}" width="130" height="80" alt="$post->image">
+                                </td>
+                                <td class="text-center">
+                                    <a href="">{{ $post->comments->count() }}</a>
                                 </td>
                                 <td>
-                                    @if($post->status == 1)
-                                    <span class="badge text-bg-success">Active</span>
-                                    @else 
-                                    <span class="badge text-bg-danger">Inactive</span>
-                                    @endif
+                                    {{$post->status}}
                                 </td>
 
                                 <td>
@@ -107,7 +107,7 @@
         }).then((res)=>{
             if(res.isConfirmed){
                 $.ajax({
-                    url: "{{url('posts/delete')}}/"+id,
+                    url: "{{url('admin/posts/delete')}}/"+id,
                     type: "DELETE",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

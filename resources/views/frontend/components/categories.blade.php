@@ -4,7 +4,7 @@
          <a href="{{ route('frontend.posts') }}"
              class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {{ !request('category') ? 'active' : '' }}">
              All Categories
-             <span class="badge bg-primary rounded-pill">{{ \App\Models\Post::where('status', '1')->count() }}</span>
+             <span class="badge bg-primary rounded-pill">{{ \App\Models\Post::where('status', 'published')->count() }}</span>
          </a>
          @foreach($categories as $category)
          <a href="{{ route('frontend.posts', ['category' => $category->id]) }}"
@@ -17,7 +17,7 @@
 
              @endif
              {{ $category->name }}
-             <span class="ms-auto badge bg-primary rounded-pill">{{ $category->posts()->where('status', '1')->count() }}</span>
+             <span class="ms-auto badge bg-primary rounded-pill">{{ $category->posts()->where('status', 'published')->count() }}</span>
          </a>
          @endforeach
      </div>

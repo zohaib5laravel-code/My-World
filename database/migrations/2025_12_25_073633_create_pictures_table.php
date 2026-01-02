@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('pictures', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->string('type')->default('gallery');
             $table->string('image');
-            $table->text('text_over_img')->nullable();
+            $table->text('description')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

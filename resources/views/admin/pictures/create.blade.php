@@ -46,25 +46,45 @@
                                     <!-- Form Inputs Column -->
                                     <div class="col-lg-8">
                                         <div class="row">
+                                            <div class="col-lg-12 mb-3">
+                                                <label class="form-label" for="title">Title</label>
+                                                <input type="text" class="form-control" name="title" id="title"
+                                                    value="{{ old('title') }}" placeholder="Enter picture title" />
+                                                @error('title')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
                                             <div class="col-lg-6 mb-3">
                                                 <label for="type" class="form-label">Type <span class="text-danger">*</span></label>
                                                 <select name="type" class="form-control" required>
+                                                    <option value="">-- Select Type --</option>
                                                     <option value="gallery">Gallery</option>
                                                     <option value="banner">Banner</option>
                                                 </select>
+                                                @error('type')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <div class="col-lg-6 mb-3">
                                                 <label class="form-label" for="image">Image <span class="text-danger">*</span></label>
-                                                <input type="file" class="form-control" name="image" id="imageInput" accept="image/*" required />
-                                                <div class="form-text">Upload an image file (JPEG, PNG, GIF, etc.) Max 5MB.</div>
+                                                <input type="file" class="form-control" name="image" id="imageInput"
+                                                    accept="image/*" multiple required />
+                                                <div class="form-text">Upload an image file (JPEG, JPG, PNG.) Max 5MB.</div>
+                                                @error('image')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <div class="col-12 mb-3">
-                                                <label class="form-label" for="text_over_img">Text Over Image</label>
-                                                <input type="text" class="form-control" name="text_over_img" id="text_over_img" />
-                                               <textarea class="form-control" id="body" name="text_over_img" ></textarea>
-                                                
+                                                <label class="form-label" for="description">Description</label>
+                                                <textarea class="form-control" id="body" name="description"
+                                                    rows="4" placeholder="Enter picture description">{{ old('description') }}</textarea>
+                                                <div class="form-text">Optional description or alt text for the image.</div>
+                                                @error('description')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -135,7 +155,7 @@
             editor = ed;
         })
         .catch(error => console.error(error));
-
+        
     document.addEventListener('DOMContentLoaded', function() {
         const imageInput = document.getElementById('imageInput');
         const previewImage = document.getElementById('previewImage');
@@ -271,6 +291,7 @@
                 imageInput.click();
             }
         });
+
     });
 </script>
 
@@ -299,6 +320,15 @@
 
     #noImagePlaceholder {
         transition: all 0.3s ease;
+    }
+
+    .form-check.form-switch {
+        padding-left: 2.5em;
+    }
+
+    .form-check-input:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
     }
 </style>
 @endsection

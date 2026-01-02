@@ -4,7 +4,7 @@
 <style>
     .post-header {
         background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
-        url('{{ asset($post->image ? "assets/posts/{$post->image}" : "https://images.unsplash.com/photo-1506905925346-21bda4d32df4") }}');
+        url('{{ asset($post->featured_image ? "assets/posts/{$post->featured_image}" : "https://images.unsplash.com/photo-1506905925346-21bda4d32df4") }}');
         background-size: cover;
         background-position: center;
         color: white;
@@ -42,7 +42,7 @@
         <div class="row">
             <div class="col-lg-8">
                 <article class="post-content mb-5">
-                    {!! $post->body !!}
+                    {!! $post->content !!}
                 </article>
 
                 <!-- Comments Section -->
@@ -134,42 +134,8 @@
                     </div>
                 </div>
 
-                @if($relatedPosts->isNotEmpty())
-                <div class="card mb-4 shadow-sm">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4">Related Posts</h4>
-                        @foreach($relatedPosts as $relatedPost)
-                        <div class="related-post mb-3">
-                            <div class="row g-0">
-                                @if($relatedPost->featured_image)
-                                <div class="col-4">
-                                    <img src="{{ asset('assets/posts/' . $relatedPost->image) }}"
-                                        class="img-fluid rounded"
-                                        alt="{{ $relatedPost->title }}"
-                                        style="height: 80px; object-fit: cover;">
-                                </div>
-                                @endif
-                                <div class="{{ $relatedPost->featured_image ? 'col-8' : 'col-12' }}">
-                                    <div class="p-2">
-                                        <h6 class="mb-1">
-                                            <a href="{{ route('posts.show', $relatedPost->slug) }}"
-                                                class="text-decoration-none text-dark">
-                                                {{ Str::limit($relatedPost->title, 40) }}
-                                            </a>
-                                        </h6>
-                                        <small class="text-muted">
-                                            {{ 3 }}
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
-
+                @include('frontend.components.related_posts')
+                
                 @include('frontend.components.categories')
 
                 @include('frontend.components.newsletter')

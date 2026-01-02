@@ -48,9 +48,9 @@
                     class="d-block w-100"
                     alt="{{ $banner->title ?? 'Banner Image' }}"
                     style="height: 500px; object-fit: cover;">
-                @if($banner->text_over_img)
+                @if($banner->title)
                 <div class="carousel-caption d-none d-md-block">
-                    <p>{!! $banner->text_over_img !!}</p>
+                    <p>{!! $banner->title !!}</p>
                 </div>
                 @endif
             </div>
@@ -132,8 +132,8 @@
             @foreach($posts as $post)
             <div class="col-md-4 mb-4">
                 <div class="card featured-post shadow-sm h-100">
-                    @if($post->image)
-                    <img loading="lazy" src="{{ asset('assets/posts/' . $post->image) }}" class="card-img-top" alt="{{ $post->title }}" style="height: 200px; object-fit: cover;">
+                    @if($post->featured_image)
+                    <img loading="lazy" src="{{ asset('assets/posts/' . $post->featured_image) }}" class="card-img-top" alt="{{ $post->title }}" style="height: 200px; object-fit: cover;">
                     @else
                     <img loading="lazy" src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Post Image" style="height: 200px; object-fit: cover;">
                     @endif
@@ -143,10 +143,10 @@
                             <i class="fas fa-tag ms-3"></i> {{ $post->category->name }}
                         </div>
                         <h5 class="card-title">{{ $post->title }}</h5>
-                        <p class="card-text">{!! Str::limit($post->body, 150) !!}</p>
+                        <p class="card-text">{!! Str::limit($post->content, 150) !!}</p>
                     </div>
                     <div class="card-footer bg-transparent">
-                        <a href="{{ route('frontend.post', $post->id) }}" class="btn btn-outline-primary">Read More</a>
+                        <a href="{{ route('frontend.post', $post->slug) }}" class="btn btn-outline-primary">Read More</a>
                     </div>
                 </div>
             </div>
@@ -205,7 +205,7 @@
         </div>
 
         <div class="text-center mt-4">
-            <a href="{{ route('posts.index') }}" class="btn btn-primary btn-lg">View All Posts</a>
+            <a href="{{ route('frontend.posts') }}" class="btn btn-primary btn-lg">View All Posts</a>
         </div>
     </div>
 </section>
@@ -221,9 +221,9 @@
             @foreach($pictures->where('type','gallery')->take(6) as $image)
             <div class="col-md-4 col-sm-6">
                 <div class="gallery-item shadow">
-                    <img loading="lazy" src="{{ asset('assets/pictures/' . $image->image) }}" alt="{{ $image->text_over_img }}">
+                    <img loading="lazy" src="{{ asset('assets/pictures/' . $image->image) }}" alt="{{ $image->title }}">
                     <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 text-white opacity-0 hover-opacity-100 transition-all">
-                        <p class="text-center">{!! $image->text_over_img !!}</p>
+                        <p class="text-center">{!! $image->title !!}</p>
                     </div>
                 </div>
             </div>

@@ -48,6 +48,14 @@
                                     <!-- Form Inputs Column -->
                                     <div class="col-lg-8">
                                         <div class="row">
+                                              <div class="col-lg-12 mb-3">
+                                                <label class="form-label" for="title">Title</label>
+                                                <input type="text" class="form-control" name="title" id="title"
+                                                    value="{{ old('title', $picture->title) }}" placeholder="Enter picture title" />
+                                                @error('title')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                             <div class="col-lg-6 mb-3">
                                                 <label for="type" class="form-label">Type <span class="text-danger">*</span></label>
                                                 <select name="type" class="form-control" required>
@@ -63,8 +71,8 @@
                                             </div>
 
                                             <div class="col-12 mb-3">
-                                                <label class="form-label" for="text_over_img">Text Over Image</label>
-                                            <textarea class="form-control" id="body" name="text_over_img" >{{$picture->text_over_img}}</textarea>
+                                                <label class="form-label" for="description">Description</label>
+                                            <textarea class="form-control" id="body" name="description" >{{$picture->description}}</textarea>
                                               
                                             </div>
                                         </div>

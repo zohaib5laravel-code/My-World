@@ -17,14 +17,14 @@ class FrontendController extends Controller
     {
         $pictures = Picture::get();
 
-        $posts = Post::limit(3)->orderBy('id', 'DESC')->get();
+        $posts = Post::limit(3)->where('status','published')->orderBy('id', 'DESC')->get();
         return view('frontend.index', compact('posts', 'pictures'));
     }
 
     public function posts(Request $request)
     {
 
-        $query = Post::query()->where('status', '1');
+        $query = Post::query()->where('status', 'published');
 
         // Search
         if ($request->has('search') && $request->search) {
@@ -62,11 +62,11 @@ class FrontendController extends Controller
         }
 
         $posts = $query->with(['category'])
-            ->paginate(9)
+            ->paginate(8)
             ->withQueryString();
 
         $categories = Category::where('status', 1)->get();
-        $popularPosts = Post::where('status', 1)
+        $popularPosts = Post::where('status', 'published')
             ->orderBy('views', 'desc')
             ->limit(5)
             ->get();
@@ -76,7 +76,7 @@ class FrontendController extends Controller
 
     public function post($slug)
     {
-        $post = Post::where('id', $slug)->first();
+        $post = Post::where('slug', $slug)->first();
         $categories = Category::where('status', 1)->get();
         $relatedPosts = Post::where('category_id', $post->category_id)
             ->where('id', '!=', $post->id)
@@ -93,7 +93,8 @@ class FrontendController extends Controller
         $comment = new Comment();
         $comment->post_id = $post->id;
         $comment->name = $request->input('name');
-        $comment->body = $request->input('comment');
+        $comment->comment = $request->input('comment');
+        $comment->ip_address  = $request->ip();
         $comment->status = 1;
         $comment->save();
 

@@ -17,9 +17,7 @@
 
 
             </div>
-            <p class="mb-0">{{ $comment->body }}</p>
-
-            <!-- Reply Form (Hidden by default) -->
+            <p class="mb-0">{{ $comment->comment }}</p>
 
         </div>
     </div>
