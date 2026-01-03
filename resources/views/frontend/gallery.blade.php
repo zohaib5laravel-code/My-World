@@ -82,7 +82,7 @@
                         <div class="gallery-info">
                             <h3 class="gallery-title">{{ $picture->title }}</h3>
                             @if($picture->description)
-                            <p class="gallery-description">{{ $picture->description }}</p>
+                            <p class="gallery-description">{!! $picture->description !!}</p>
                             @endif
                             <div class="text-muted small mt-2">
                                 <i class="far fa-calendar"></i> {{ $picture->created_at->format('M d, Y') }}

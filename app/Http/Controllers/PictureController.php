@@ -10,7 +10,7 @@ class PictureController extends Controller
 {
     public function index()
     {
-        $pictures = Picture::paginate(10);
+        $pictures = Picture::latest()->paginate(10);
         return view('admin.pictures.index', compact('pictures'));
     }
 
