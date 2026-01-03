@@ -80,6 +80,9 @@
 
                         </tbody>
                     </table>
+
+                    {{ $pictures->links() }}
+
                 </div>
 
             </div>
